@@ -1,6 +1,5 @@
 import axios from 'axios'
 import { defaultConfig } from './axiosConfig'
-import Vue from 'vue'
 
 const api = axios.create(defaultConfig)
 
@@ -14,7 +13,7 @@ export default class HttpService {
   }
 
   static handleHttpError (self, error) {
-    Vue.$log.error(error)
+    console.log(error)
     try {
       console.log(error.response.data._metadata.message, error.response.statusText + ' : ' + error.response.status)
       // self.$buefy.toast.open(error.response.data._metadata.message, error.response.statusText + ' : ' + error.response.status)

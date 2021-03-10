@@ -2,7 +2,7 @@ html {
     height: 100%;
     box-sizing: border-box;
     position: relative;
-    background-color: #0d101d;
+    background-color: #F8FAFD;
   }
   *,
   *:before,
@@ -13,7 +13,6 @@ html {
 .body {
     padding-left: 2rem;
     padding-right: 2rem;
-    background-color: #faf9f4;
     position: relative;
     min-height: calc(100vh - 70px); /* will cover the 100% of viewport */
     overflow: hidden;
@@ -24,7 +23,7 @@ html {
     font-family: 'Open Sans', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    color: rgba(255, 255, 255, 0.9);
+    color: #F8FAFD;
 }
 
 .container {
@@ -38,4 +37,130 @@ html {
         font-weight: 600;
         color:rgb(200,140,50);
     }
+}
+
+label {
+    font-size: 1rem!important;
+    font-weight: 400!important;
+    color: #2c3e50!important;
+}
+
+.scrolling-wrapper {
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+
+    .card {
+      display: inline-block;
+    }
+  }
+
+// Import Bulma's core
+@import "~bulma/sass/utilities/_all";
+
+// Set your colors
+$primary: #4A73FC;
+$primary-light: findLightColor($primary);
+$primary-dark: findDarkColor($primary);
+$primary-invert: findColorInvert($primary);
+$twitter: #4099FF;
+$twitter-invert: findColorInvert($twitter);
+
+// Lists and maps
+$custom-colors: null !default;
+$custom-shades: null !default;
+
+// Setup $colors to use as bulma classes (e.g. 'is-twitter')
+$colors: mergeColorMaps(
+    (
+        "white": (
+            $white,
+            $black,
+        ),
+        "black": (
+            $black,
+            $white,
+        ),
+        "light": (
+            $light,
+            $light-invert,
+        ),
+        "dark": (
+            $dark,
+            $dark-invert,
+        ),
+        "primary": (
+            $primary,
+            $primary-invert,
+            $primary-light,
+            $primary-dark,
+        ),
+        "link": (
+            $link,
+            $link-invert,
+            $link-light,
+            $link-dark,
+        ),
+        "info": (
+            $info,
+            $info-invert,
+            $info-light,
+            $info-dark,
+        ),
+        "success": (
+            $success,
+            $success-invert,
+            $success-light,
+            $success-dark,
+        ),
+        "warning": (
+            $warning,
+            $warning-invert,
+            $warning-light,
+            $warning-dark,
+        ),
+        "danger": (
+            $danger,
+            $danger-invert,
+            $danger-light,
+            $danger-dark,
+        ),
+    ),
+    $custom-colors
+);
+
+// Links
+$link: $primary;
+$link-invert: $primary-invert;
+$link-focus-border: $primary;
+
+// Import Bulma and Buefy styles
+@import "~bulma";
+@import "~buefy/src/scss/buefy";
+
+.card {
+    background-color: #4A73FC;
+    border-radius: 1rem;
+    box-shadow: 0 0.5em 1em -0.125em rgb(10 10 10 / 10%), 0 0px 0 1px rgb(10 10 10 / 2%);
+    color: #c2d2fd;
+    max-width: 100%;
+    overflow: hidden;
+    position: relative;
+
+    .icon {
+        color: #F8FAFD;
+    }
+}
+
+.content h1 {
+    margin-bottom: 0;
+}
+
+.card-content {
+    background-color: transparent;
+    padding: 0.5rem;
+}
+
+.content figure {
+    margin: auto;
 }

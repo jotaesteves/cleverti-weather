@@ -6,9 +6,9 @@ import Vue from 'vue'
 const state = {
   locationSearch: {},
   location: {
-    title: '',
+    title: 'Cleverti',
     parent: {
-      title: '--'
+      title: 'Weather App'
     }
   },
   locationDay: {},
@@ -32,33 +32,52 @@ const getters = {
   location: state => state.location,
   locationDay: state => state.locationDay,
   defaultLocation: state => state.locationSearch.length > 0 ? state.locationSearch[0] : [],
-  title: state => `${state.location.title}, ${state.location.parent.title}`,
+  city: state => state.location.title,
+  country: state => state.location.parent.title,
+  todayForecast: state => state.location.consolidated_weather ? state.location.consolidated_weather[0] : [],
+  nextFiveDayForecast: (state) => {
+    if (state.location.consolidated_weather) {
+      const append = {
+        sun_rise: state.location.sun_rise,
+        sun_set: state.location.sun_set
+      }
+      const newArray = state.location.consolidated_weather.map(day => Object.assign(day, append))
+      return newArray
+    }
+    return []
+  },
   loading: state => state.loading
 }
 
 const actions = {
-  async getBrowserPosition () {
-    const pos = await new Promise((resolve, reject) => {
-      navigator.geolocation.getCurrentPosition(resolve, reject)
-    })
-    return pos
+  async getFirstLocation ({ dispatch }) {
+    let coords = false
+    const isGeolocation = await dispatch('checkUserPermission')
+    if (isGeolocation) coords = await dispatch('getBrowserPosition')
+    if (coords) dispatch('getSearchLocationLattLong', coords)
   },
 
-  getSearchLocation (store, query) {
+  async getBrowserPosition () {
+    return await new Promise((resolve, reject) => {
+      navigator.geolocation.getCurrentPosition(resolve, reject)
+    })
+  },
+
+  async checkUserPermission () {
+    return navigator.permissions.query({ name: 'geolocation' }).then(res => res)
+  },
+
+  getSearchLocation ({ commit }, query) {
     WeatherService.getSearchLocation(query)
       .then((response) => {
-        store.commit(types.SET_LOCATION_SEARCH, response.data)
+        commit(types.SET_LOCATION_SEARCH, response.data)
       })
       .catch((err) => {
         HttpService.handleHttpError(Vue, err)
       })
   },
 
-  async getSearchLocationLattLong ({ commit, dispatch }, coords) {
-    if (!coords && navigator.onLine) {
-      coords = await dispatch('getBrowserPosition').catch(err => console.log(err))
-    }
-
+  async getSearchLocationLattLong ({ commit }, coords) {
     WeatherService.getSearchLocationLattLong(coords)
       .then((response) => {
         commit(types.SET_LOCATION_SEARCH, response.data)
@@ -68,20 +87,20 @@ const actions = {
       })
   },
 
-  getLocation (store, woeid) {
+  getLocation ({ commit }, woeid) {
     WeatherService.getLocation(woeid)
       .then((response) => {
-        store.commit(types.SET_LOCATION, response.data)
+        commit(types.SET_LOCATION, response.data)
       })
       .catch((err) => {
         HttpService.handleHttpError(Vue, err)
       })
   },
 
-  getLocationDay (store, woeid, date) {
+  getLocationDay ({ commit }, woeid, date) {
     WeatherService.getLocationDay(woeid, date)
       .then((response) => {
-        store.commit(types.SET_LOCATION_DAY, response.data)
+        commit(types.SET_LOCATION_DAY, response.data)
       })
       .catch((err) => {
         HttpService.handleHttpError(Vue, err)
