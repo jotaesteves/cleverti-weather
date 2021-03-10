@@ -1,0 +1,7 @@
+// weather
+export const SET_LOCATION_SEARCH = 'SET_LOCATION_SEARCH'
+export const SET_LOCATION = 'SET_LOCATION'
+export const SET_LOCATION_DAY = 'SET_LOCATION_DAY'
+
+// LOADER
+export const SET_LOADER = 'SET_LOADER'
