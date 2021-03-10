@@ -6,7 +6,7 @@ import Vue from 'vue'
 const state = {
   locationSearch: {},
   location: {
-    title: '--',
+    title: '',
     parent: {
       title: '--'
     }
